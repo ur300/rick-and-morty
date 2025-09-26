@@ -13,7 +13,7 @@ function CharactersIndexComponent() {
   console.log(characters)
   return (
     <div className="characters-page">
-      <h1>Rick and Morty Characters</h1>
+      <h1 >Rick and Morty Characters</h1>
       <div className="characters-grid">
         {characters.results.map((character: Character) => (
           <Link
