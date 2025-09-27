@@ -1,10 +1,23 @@
-export interface Character {
+export enum CharacterStatus {
+  ALIVE = 'Alive',
+  DEAD = 'Dead',
+  UNKNOWN = 'unknown',
+}
+
+export enum CharacterGender {
+  FEMALE = 'Female',
+  MALE = 'Male',
+  GENDERLESS = 'Genderless',
+  UNKNOWN = 'unknown',
+}
+
+export type Character = {
   id: number;
   name: string;
-  status: 'Alive' | 'Dead' | 'unknown';
+  status: CharacterStatus;
   species: string;
   type: string;
-  gender: 'Female' | 'Male' | 'Genderless' | 'unknown';
+  gender: CharacterGender;
   origin: {
     name: string;
     url: string;
@@ -19,7 +32,7 @@ export interface Character {
   created: string;
 }
 
-export interface CharactersResponse {
+export type CharactersResponse = {
   info: {
     count: number;
     pages: number;
@@ -29,15 +42,16 @@ export interface CharactersResponse {
   results: Character[];
 }
 
-export interface CharacterFilters {
+export type CharacterFilters = {
   name?: string;
-  status?: 'Alive' | 'Dead' | 'unknown';
+  status?: CharacterStatus;
   species?: string;
   type?: string;
-  gender?: 'Female' | 'Male' | 'Genderless' | 'unknown';
+  gender?: CharacterGender;
 }
 
-export interface CharactersParams {
+export type CharactersParams = {
   page?: number;
   filter?: CharacterFilters;
 }
+

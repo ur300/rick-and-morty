@@ -2,6 +2,7 @@ import { Link, Outlet, createRootRouteWithContext } from '@tanstack/react-router
 import type { QueryClient } from '@tanstack/react-query'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanstackDevtools } from '@tanstack/react-devtools'
+import { Header } from '@/components'
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
@@ -19,7 +20,8 @@ export const Route = createRootRouteWithContext<{
 
 function RootComponent() {
   return (
-    <>
+    <div className="p-20">
+      <Header />
       <Outlet />
       <TanstackDevtools
         config={{
@@ -32,6 +34,6 @@ function RootComponent() {
           },
         ]}
       />
-    </>
+    </div>
   )
 }
