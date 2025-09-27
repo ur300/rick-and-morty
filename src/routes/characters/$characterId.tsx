@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import charactersService from '@/services/characters.service'
 import { CharacterDetail } from '@/components/CharacterDetail'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { LoadingIndicator } from '@/components/LoadingIndicator'
 
 export const Route = createFileRoute('/characters/$characterId')({
   loader: async ({ params: { characterId } }) => {
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/characters/$characterId')({
       character: response.data
     }
   },
+  pendingComponent: () => <LoadingIndicator message="Loading character details..." />,
   component: CharacterDetailComponent,
 })
 
