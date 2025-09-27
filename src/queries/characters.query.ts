@@ -8,6 +8,6 @@ export const charactersQueryOptions = (params: CharactersParams = {}) => queryOp
     const response = await CharactersService.getCharacters(params)
     return response.data
   },
-  staleTime: 0,
-  gcTime: 10 * 60 * 1000, // 10 minutes
+  staleTime: 5 * 60 * 1000,
+  gcTime: 10 * 60 * 1000,
 })

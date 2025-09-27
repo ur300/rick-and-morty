@@ -1,62 +1,86 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
-import { CharactersTable } from '@/components'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { CharactersTable, LoadingIndicator, CharacterFilters, Pagination } from '@/components'
 import { charactersQueryOptions } from '@/queries'
-import { LoadingIndicator } from '@/components/LoadingIndicator'
 import { z } from 'zod'
-import type { PaginationState } from '@tanstack/react-table'
+import { CharacterStatus } from '@/types'
+
 
 const charactersSearchSchema = z.object({
-  page: z.number().int().positive().optional().default(1),
+  page: z.string().optional().transform((val) => val ? parseInt(val, 10) : 1),
+  name: z.string().optional(),
+  status: z.nativeEnum(CharacterStatus).optional(),
 })
 
 export const Route = createFileRoute('/characters/')({
-  validateSearch: charactersSearchSchema,
   component: CharactersIndexComponent,
+  pendingComponent: () => <LoadingIndicator message="Loading characters list..." />,
 })
 
 function CharactersIndexComponent() {
   const search = Route.useSearch()
   const navigate = Route.useNavigate()
   
-  const pagination: PaginationState = {
-    pageIndex: (search.page || 1) - 1,
-    pageSize: 20,
-  }
+  // Manual search parameter handling
+  const currentPage = search.page ? parseInt(search.page as string, 10) : 1
+  const name = search.name as string | undefined
+  const status = search.status as CharacterStatus | undefined
   
-  const setPagination = (newPagination: PaginationState) => {
+  const handleNameChange = (newName: string | undefined) => {
     navigate({
-      search: { page: newPagination.pageIndex + 1 }
+      search: { 
+        page: 1,
+        name: newName,
+        status
+      }
+    })
+  }
+
+  const handleStatusChange = (newStatus: CharacterStatus | undefined) => {
+    navigate({
+      search: { 
+        page: 1,
+        name: name,
+        status: newStatus,
+      }
+    })
+  }
+
+  const handleClearFilters = () => {
+    navigate({
+      search: { 
+        page: 1,
+        name: undefined,
+        status: undefined,
+      }
     })
   }
   
-  const { data: characters, isLoading, error } = useQuery(charactersQueryOptions({ page: search.page }))
-  
-  console.log('Current page:', search.page);
-  console.log('Characters data:', characters);
-  console.log('Characters results length:', characters?.results?.length);
-  console.log('Is loading:', isLoading);
-  
-  if (isLoading) {
-    return <LoadingIndicator message="Loading characters list..." />
-  }
-  
-  if (error) {
-    return <div>Error loading characters: {error.message}</div>
-  }
-  
-  if (!characters) {
-    return <div>No characters data</div>
-  }
-  
+  const { data: characters } = useSuspenseQuery(charactersQueryOptions({
+    page: currentPage,
+    filter: {
+      name: name,
+      status: status,
+    }
+  }))
   return (
     <>
       <h1 className="text-3xl font-bold mb-6">Rick and Morty Characters</h1>
-      <CharactersTable 
-        characters={characters.results} 
+      
+      <CharacterFilters
+        name={name}
+        status={status}
+        onNameChange={handleNameChange}
+        onStatusChange={handleStatusChange}
+        onClearFilters={handleClearFilters}
+      />
+      
+      <CharactersTable characters={characters.results} />
+      <Pagination 
+        currentPage={currentPage}
         totalPages={characters.info.pages}
-        setPagination={setPagination}
-        pagination={pagination}
+        pageSize={20}
+        showPageInfo={true}
       />
       <Outlet />
     </>

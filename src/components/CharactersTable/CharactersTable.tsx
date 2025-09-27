@@ -1,3 +1,4 @@
+"use no memo"
 import { Link } from '@tanstack/react-router'
 import {
   createColumnHelper,
@@ -5,23 +6,18 @@ import {
   getCoreRowModel,
   type CellContext,
   useReactTable,
-  type PaginationState,
-  type Updater,
 } from '@tanstack/react-table'
 import type { Character } from '@/types'
 import { CharacterStatus } from '@/types'
-import { Avatar, Status, Pagination } from '@/components'
+import { Avatar, Status } from '@/components'
 
 const columnHelper = createColumnHelper<Character>()
 
 interface CharactersTableProps {
   characters: Character[]
-  totalPages: number
-  setPagination: (pagination: PaginationState) => void
-  pagination: PaginationState
 }
 
-export function CharactersTable({ characters, totalPages, setPagination, pagination }: CharactersTableProps) {  
+export function CharactersTable({ characters }: CharactersTableProps) {  
   const columns = [
     columnHelper.accessor('image', {
       id: 'image',
@@ -64,17 +60,6 @@ export function CharactersTable({ characters, totalPages, setPagination, paginat
     data: characters,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    manualPagination: true,
-    pageCount: totalPages,
-    state: { pagination },
-    onPaginationChange: (updaterOrValue: Updater<PaginationState> | PaginationState) => {
-      if (typeof updaterOrValue === 'function') {
-        setPagination(updaterOrValue(pagination))
-      } else {
-        setPagination(updaterOrValue)
-      }
-    },
-    debugTable: true,
   })
 
   return (
@@ -101,8 +86,8 @@ export function CharactersTable({ characters, totalPages, setPagination, paginat
             ))}
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.map((row, index) => (
-              <tr key={`${row.id}-${pagination.pageIndex}-${index}`} className="hover:bg-gray-50">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-50">
                 {row.getVisibleCells().map(cell => (
                   <td key={cell.id} className="px-6 py-4 whitespace-nowrap">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -113,15 +98,6 @@ export function CharactersTable({ characters, totalPages, setPagination, paginat
           </tbody>
         </table>
       </div>
-
-      <Pagination 
-        currentPage={pagination.pageIndex + 1}
-        totalPages={totalPages}
-        pageSize={20}
-        onPageChange={(page) => setPagination({ ...pagination, pageIndex: page - 1 })}
-        showPageInfo={true}
-        showPageSizeSelector={false}
-      />
     </div>
   )
 }
