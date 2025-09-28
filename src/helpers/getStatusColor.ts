@@ -1,14 +1,14 @@
-import { CharacterStatus } from "@/types"
+import { type CharacterStatus } from "@/types";
 
 export const getStatusColor = (status: CharacterStatus) => {
   switch (status.toLowerCase()) {
-    case CharacterStatus.ALIVE:
-      return 'bg-green-500'
-    case CharacterStatus.DEAD:
-      return 'bg-red-500'
-    case CharacterStatus.UNKNOWN:
-      return 'bg-gray-500'
+    case "Alive":
+      return "bg-green-500";
+    case "Dead":
+      return "bg-red-500";
+    case "unknown":
+      return "bg-gray-500";
     default:
-      return 'bg-gray-500'
+      return "bg-gray-500";
   }
-}
+};

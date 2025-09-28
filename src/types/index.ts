@@ -1,15 +1,6 @@
-export enum CharacterStatus {
-  ALIVE = 'Alive',
-  DEAD = 'Dead',
-  UNKNOWN = 'unknown',
-}
+export type CharacterStatus = "Alive" | "Dead" | "unknown";
 
-export enum CharacterGender {
-  FEMALE = 'Female',
-  MALE = 'Male',
-  GENDERLESS = 'Genderless',
-  UNKNOWN = 'unknown',
-}
+export type CharacterGender = "Female" | "Male" | "Genderless" | "unknown";
 
 export type Character = {
   id: number;
@@ -30,7 +21,7 @@ export type Character = {
   episode: string[];
   url: string;
   created: string;
-}
+};
 
 export type CharactersResponse = {
   info: {
@@ -40,7 +31,7 @@ export type CharactersResponse = {
     prev: string | null;
   };
   results: Character[];
-}
+};
 
 export type CharacterFilters = {
   name?: string;
@@ -48,10 +39,9 @@ export type CharacterFilters = {
   species?: string;
   type?: string;
   gender?: CharacterGender;
-}
+};
 
 export type CharactersParams = {
   page?: number;
   filter?: CharacterFilters;
-}
-
+};

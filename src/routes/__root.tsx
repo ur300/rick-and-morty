@@ -1,21 +1,14 @@
-import { Link, Outlet, createRootRouteWithContext } from '@tanstack/react-router'
-import type { QueryClient } from '@tanstack/react-query'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
-import { Header } from '@/components'
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { TanstackDevtools } from "@tanstack/react-devtools";
+import { ErrorComponent, Header } from "@/components";
 
 export const Route = createRootRouteWithContext<{
-  queryClient: QueryClient
+  queryClient: QueryClient;
 }>()({
   component: RootComponent,
-  notFoundComponent: () => {
-    return (
-      <div>
-        <p>Page not found</p>
-        <Link to="/">Take me Home</Link>
-      </div>
-    )
-  },
+  notFoundComponent: () => <ErrorComponent message="Page not found" />,
 });
 
 function RootComponent() {
@@ -25,15 +18,15 @@ function RootComponent() {
       <Outlet />
       <TanstackDevtools
         config={{
-          position: 'bottom-left',
+          position: "bottom-left",
         }}
         plugins={[
           {
-            name: 'Tanstack Router',
+            name: "Tanstack Router",
             render: <TanStackRouterDevtoolsPanel />,
           },
         ]}
       />
     </div>
-  )
+  );
 }

@@ -8,6 +8,7 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint \"src/**/*.{ts,tsx}\""
   },
   "lint-staged": {
@@ -25,7 +26,6 @@
     "@tanstack/react-router": "^1.132.0",
     "@tanstack/react-router-devtools": "^1.132.0",
     "@tanstack/react-table": "^8.21.3",
-    "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/router-vite-plugin": "^1.132.2",
     "axios": "^1.12.2",
     "react": "^19.0.0",
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.13",
     "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^16.2.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.8",

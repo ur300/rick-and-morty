@@ -1,1 +1,1 @@
-export * from './characters.query'
+export * from "./characters.query";

@@ -1,14 +1,14 @@
-import apiService from './api';
-import type { Character, CharactersResponse, CharactersParams } from '@/types';
+import apiService from "./api";
+import type { Character, CharactersParams, CharactersResponse } from "@/types";
 
 class CharactersService {
   getCharacters({ page, filter }: CharactersParams) {
     const params = new URLSearchParams();
-    
+
     if (page) {
-      params.append('page', page.toString());
+      params.append("page", page.toString());
     }
-    
+
     if (filter) {
       Object.entries(filter).forEach(([key, value]) => {
         if (value) {
@@ -16,10 +16,10 @@ class CharactersService {
         }
       });
     }
-    
+
     const queryString = params.toString();
-    const url = queryString ? `/character?${queryString}` : '/character';
-    
+    const url = queryString ? `/character?${queryString}` : "/character";
+
     return apiService.get<CharactersResponse>(url);
   }
 

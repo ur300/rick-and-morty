@@ -1,72 +1,101 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { CharactersTable, LoadingIndicator, CharacterFilters, Pagination } from '@/components'
-import { charactersQueryOptions } from '@/queries'
-import { z } from 'zod'
-import { CharacterStatus } from '@/types'
+import { Outlet, createFileRoute } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  CharacterFilters,
+  CharactersTable,
+  ErrorComponent,
+  LoadingIndicator,
+  Pagination,
+  RefreshButton,
+} from "@/components";
+import { charactersQueryOptions } from "@/queries";
+import { type CharacterStatus } from "@/types";
+import { validateCharacterSearch } from "@/helpers";
 
+const PAGE_SIZE = 20;
 
-const charactersSearchSchema = z.object({
-  page: z.string().optional().transform((val) => val ? parseInt(val, 10) : 1),
-  name: z.string().optional(),
-  status: z.nativeEnum(CharacterStatus).optional(),
-})
-
-export const Route = createFileRoute('/characters/')({
+export const Route = createFileRoute("/characters/")({
   component: CharactersIndexComponent,
-  pendingComponent: () => <LoadingIndicator message="Loading characters list..." />,
-})
+  pendingComponent: () => (
+    <LoadingIndicator message="Loading characters list..." />
+  ),
+  errorComponent: ({ error }) => (
+    <ErrorComponent
+      error={error}
+      message="Failed to load characters. Please try again."
+    />
+  ),
+});
 
 function CharactersIndexComponent() {
-  const search = Route.useSearch()
-  const navigate = Route.useNavigate()
-  
-  // Manual search parameter handling
-  const currentPage = search.page ? parseInt(search.page as string, 10) : 1
-  const name = search.name as string | undefined
-  const status = search.status as CharacterStatus | undefined
-  
+  const navigate = Route.useNavigate();
+  const search = Route.useSearch();
+  const { page = 1, name, status } = validateCharacterSearch(search);
+
   const handleNameChange = (newName: string | undefined) => {
     navigate({
-      search: { 
+      search: {
         page: 1,
         name: newName,
-        status
-      }
-    })
-  }
+        status,
+      },
+    });
+  };
 
   const handleStatusChange = (newStatus: CharacterStatus | undefined) => {
     navigate({
-      search: { 
+      search: {
         page: 1,
-        name: name,
+        name,
         status: newStatus,
-      }
-    })
-  }
+      },
+    });
+  };
 
   const handleClearFilters = () => {
     navigate({
-      search: { 
+      search: {
         page: 1,
         name: undefined,
         status: undefined,
-      }
-    })
-  }
-  
-  const { data: characters } = useSuspenseQuery(charactersQueryOptions({
-    page: currentPage,
-    filter: {
-      name: name,
-      status: status,
-    }
-  }))
+      },
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    navigate({
+      search: {
+        page,
+        name,
+        status,
+      },
+    });
+  };
+
+  const {
+    data: characters,
+    refetch,
+    isFetching,
+  } = useSuspenseQuery(
+    charactersQueryOptions({
+      page,
+      filter: {
+        name,
+        status,
+      },
+    }),
+  );
+  const handleRefresh = () => {
+    refetch();
+  };
+
   return (
     <>
-      <h1 className="text-3xl font-bold mb-6">Rick and Morty Characters</h1>
-      
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Rick and Morty Characters</h1>
+        <RefreshButton onRefresh={handleRefresh} isFetching={isFetching} />
+      </div>
+
       <CharacterFilters
         name={name}
         status={status}
@@ -74,15 +103,16 @@ function CharactersIndexComponent() {
         onStatusChange={handleStatusChange}
         onClearFilters={handleClearFilters}
       />
-      
+
       <CharactersTable characters={characters.results} />
-      <Pagination 
-        currentPage={currentPage}
+      <Pagination
+        currentPage={page}
         totalPages={characters.info.pages}
-        pageSize={20}
+        pageSize={PAGE_SIZE}
         showPageInfo={true}
+        onPageChange={handlePageChange}
       />
       <Outlet />
     </>
-  )
+  );
 }

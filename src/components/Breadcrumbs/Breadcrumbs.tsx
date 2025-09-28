@@ -1,19 +1,19 @@
-import { Link } from '@tanstack/react-router'
-import { HomeIcon, ChevronRightIcon } from '@/components'
+import { Link } from "@tanstack/react-router";
+import { ChevronRightIcon, HomeIcon } from "@/components";
 
 export type BreadcrumbItem = {
-  label: string
-  href?: string
-  current?: boolean
-}
+  label: string;
+  href?: string;
+  current?: boolean;
+};
 
 type BreadcrumbsProps = {
-  items: BreadcrumbItem[]
-}
+  items: BreadcrumbItem[];
+};
 
 export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
   if (!items || items.length === 0) {
-    return null
+    return null;
   }
 
   return (
@@ -39,7 +39,10 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
                   {item.label}
                 </Link>
               ) : (
-                <span className="ml-4 text-sm font-medium text-gray-900" aria-current="page">
+                <span
+                  className="ml-4 text-sm font-medium text-gray-900"
+                  aria-current="page"
+                >
                   {item.label}
                 </span>
               )}
@@ -48,5 +51,5 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
         ))}
       </ol>
     </nav>
-  )
-}
+  );
+};

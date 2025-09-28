@@ -1,8 +1,10 @@
 interface LoadingIndicatorProps {
-  message?: string
+  message?: string;
 }
 
-export function LoadingIndicator({ message = "Loading..." }: LoadingIndicatorProps) {
+export function LoadingIndicator({
+  message = "Loading...",
+}: LoadingIndicatorProps) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
@@ -10,5 +12,5 @@ export function LoadingIndicator({ message = "Loading..." }: LoadingIndicatorPro
         <p className="text-gray-600">{message}</p>
       </div>
     </div>
-  )
+  );
 }

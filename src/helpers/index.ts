@@ -1,1 +1,2 @@
-export { getStatusColor } from './getStatusColor'
+export { getStatusColor } from "./getStatusColor";
+export { validateCharacterSearch } from "./searchValidation";
