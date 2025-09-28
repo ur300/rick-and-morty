@@ -10,4 +10,5 @@ afterEach(() => {
   cleanup();
 });
 
-global.vi = vi;
+// Make vi available globally
+(globalThis as any).vi = vi;

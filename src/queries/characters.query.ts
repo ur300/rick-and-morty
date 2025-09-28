@@ -10,5 +10,5 @@ export const charactersQueryOptions = (params: CharactersParams = {}) =>
       const response = await CharactersService.getCharacters(params);
       return response.data;
     },
-    staleTime: QUERY_STALE_TIME
+    staleTime: QUERY_STALE_TIME,
   });

@@ -1,4 +1,4 @@
-import React, { type ReactElement } from "react";
+import { type ReactElement } from "react";
 import { type RenderOptions, render } from "@testing-library/react";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { QueryClient } from "@tanstack/react-query";
@@ -10,8 +10,8 @@ const testRouter = createRouter({
   context: { queryClient },
 });
 
-const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return <RouterProvider router={testRouter}>{children}</RouterProvider>;
+const AllTheProviders = () => {
+  return <RouterProvider router={testRouter} />;
 };
 
 const customRender = (

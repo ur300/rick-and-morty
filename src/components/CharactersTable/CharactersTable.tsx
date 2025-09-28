@@ -20,9 +20,7 @@ const columns = [
   columnHelper.accessor("image", {
     id: "image",
     header: "Image",
-    cell: (info) => (
-      <Avatar src={info.getValue() as string} alt="Character" />
-    ),
+    cell: (info) => <Avatar src={info.getValue() as string} alt="Character" />,
   }),
   columnHelper.accessor("name", {
     id: "name",
@@ -59,7 +57,6 @@ const columns = [
 ];
 
 export function CharactersTable({ characters }: CharactersTableProps) {
-
   const table = useReactTable({
     data: characters,
     columns,
