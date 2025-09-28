@@ -112,7 +112,6 @@ function CharactersIndexComponent() {
         showPageInfo={true}
         onPageChange={handlePageChange}
       />
-      <Outlet />
     </>
   );
 }
