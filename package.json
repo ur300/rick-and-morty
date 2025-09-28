@@ -6,10 +6,12 @@
     "dev": "vite --port 3000",
     "start": "vite --port 3000",
     "build": "vite build && tsc",
+    "build:github": "NODE_ENV=production vite build && tsc",
     "serve": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint \"src/**/*.{ts,tsx}\""
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "preview": "vite preview --port 4173"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
