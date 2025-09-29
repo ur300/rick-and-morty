@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Status } from "../Status";
+import { Status } from "@/components";
 
 type CharacterDetailsTableProps = {
   character: Character;

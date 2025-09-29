@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "@/components/Icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components";
 import { getVisiblePages } from "@/helpers/getVisiblePages";
 
 interface PaginationProps {
