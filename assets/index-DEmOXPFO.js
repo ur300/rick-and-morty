@@ -1,0 +1,1 @@
+import{c as s,j as n,E as a}from"./index-_75aOzdv.js";const p=t=>{const r=s.c(2),{error:e}=t;let o;return r[0]!==e?(o=n.jsx(a,{error:e,message:"Failed to load characters. Please try again."}),r[0]=e,r[1]=o):o=r[1],o};export{p as errorComponent};
